@@ -115,8 +115,20 @@ def generate_launch_description():
         description="Publish a static TF gimbal_pitch_odom->camera for testing without CBoard",
     )
 
-    use_static_tf = LaunchConfiguration("use_static_tf")
+    declare_use_serial_driver_cmd = DeclareLaunchArgument(
+        "use_serial_driver",
+        default_value="False",
+        description="Launch ursa_serial_driver for C-board communication via USB-CDC",
+    )
 
+    use_static_tf = LaunchConfiguration("use_static_tf")
+    use_serial_driver = LaunchConfiguration("use_serial_driver")
+
+    # Always-on static TF: gimbal_pitch_odom -> camera (camera mounting extrinsic).
+    # When testing without C-board (use_static_tf=True) this also serves as the
+    # world-frame anchor because nothing publishes odom->gimbal_pitch_odom.
+    # When serial driver is running it provides the dynamic odom->gimbal_pitch_odom,
+    # and this node only needs to cover the remaining gimbal->camera leg.
     static_tf_node = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
@@ -127,6 +139,20 @@ def generate_launch_description():
             "front_industrial_camera_optical_frame",
         ],
         condition=IfCondition(use_static_tf),
+    )
+
+    serial_driver_node = Node(
+        package="ursa_serial_driver",
+        executable="ursa_serial_driver_node",
+        name="ursa_serial_driver",
+        output="screen",
+        parameters=[
+            os.path.join(
+                get_package_share_directory("ursa_serial_driver"),
+                "config", "serial_driver_params.yaml",
+            )
+        ],
+        condition=IfCondition(use_serial_driver),
     )
 
     bringup_cmd = IncludeLaunchDescription(
@@ -179,9 +205,11 @@ def generate_launch_description():
     ld.add_action(declare_use_respawn_cmd)
     ld.add_action(declare_log_level_cmd)
     ld.add_action(declare_use_static_tf_cmd)
+    ld.add_action(declare_use_serial_driver_cmd)
 
     # Add the actions to launch all of the navigation nodes
     ld.add_action(static_tf_node)
+    ld.add_action(serial_driver_node)
     ld.add_action(bringup_cmd)
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)

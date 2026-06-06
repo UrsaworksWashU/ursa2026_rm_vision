@@ -1,0 +1,7 @@
+ursa_serial_driver:
+  ros__parameters:
+    # USB-CDC VCP device — create a udev rule to get a stable name:
+    #   SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="00ca", SYMLINK+="gimbal"
+    # Then set device_name to "/dev/gimbal".
+    device_name: "/dev/ttyACM0"
+    timestamp_offset: 0.0   # seconds to subtract from now() when stamping TF
