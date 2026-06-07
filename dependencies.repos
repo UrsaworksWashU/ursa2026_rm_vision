@@ -22,3 +22,7 @@ repositories:
     type: git
     url: https://github.com/SMBU-PolarBear-Robotics-Team/pb_rm_interfaces.git
     version: main
+  ursa_serial_driver:
+    type: git
+    url: https://github.com/UrsaworksWashU/ursa_serial_driver.git
+    version: main
