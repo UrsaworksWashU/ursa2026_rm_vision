@@ -1,4 +1,4 @@
-# pb2025_rm_vision
+# ursa2026_rm_vision
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build and Test](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_rm_vision/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_rm_vision/actions/workflows/ci.yml)
@@ -6,9 +6,13 @@
 
 ![PolarBear Logo](https://raw.githubusercontent.com/SMBU-PolarBear-Robotics-Team/.github/main/.docs/image/polarbear_logo_text.png)
 
+## 0. Important Notes
+
+- Among four USB ports on Hero's Jetson Orin Nano, do not connect camera USB with the bottom right USB port, due to unknown reasons it will limit the camera fps to about 30.
+
 ## 1. 项目介绍
 
-深圳北理莫斯科大学 北极熊战队视觉算法仓库，用于 RoboMaster 机器人装甲板检测/整车状态估计/弹道计算。
+copied and developed from 深圳北理莫斯科大学 北极熊战队视觉算法仓库，用于 RoboMaster 机器人装甲板检测/整车状态估计/弹道计算。
 
 - [armor_detector_opencv](./armor_detector_opencv/): 基于 @chenjunnn 开源项目 [rm_vision](https://github.com/chenjunnn/rm_vision) OpenCV 装甲板检测功能包
 - [armor_tracker](./armor_tracker/): 基于 @FaterYU 开源项目 [rm_auto_aim](https://github.com/FaterYU/rm_auto_aim/tree/main/armor_tracker) 的整车状态估计功能包

@@ -1,6 +1,12 @@
-image_width: 1440
+# Camera configs for HikVision MV-CU120-10UC with MVL-HF0628M-6MPE 1/1.8” 6mm 6MP FA LENS
+# Resolution not set to maximum 1624*1240 to maintain stable fps
+image_width: 1440 
 image_height: 1080
 camera_name: front_industrial_camera
+
+# Calibrate the camera following these tutorials:
+# https://flowus.cn/lihanchen/share/02a518a0-f1bb-47a5-8313-55f75bab21b5
+# https://docs.ros.org/en/rolling/p/camera_calibration/doc/tutorial_mono.html
 camera_matrix:
   rows: 3
   cols: 3
