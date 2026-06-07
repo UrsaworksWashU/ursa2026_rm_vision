@@ -18,7 +18,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition, UnlessCondition
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -109,36 +109,15 @@ def generate_launch_description():
         "log_level", default_value="info", description="log level"
     )
 
-    declare_use_static_tf_cmd = DeclareLaunchArgument(
-        "use_static_tf",
-        default_value="True",
-        description="Publish a static TF gimbal_pitch_odom->camera for testing without CBoard",
-    )
-
-    declare_use_serial_driver_cmd = DeclareLaunchArgument(
-        "use_serial_driver",
-        default_value="False",
-        description="Launch ursa_serial_driver for C-board communication via USB-CDC",
-    )
-
-    use_static_tf = LaunchConfiguration("use_static_tf")
-    use_serial_driver = LaunchConfiguration("use_serial_driver")
-
-    # Always-on static TF: gimbal_pitch_odom -> camera (camera mounting extrinsic).
-    # When testing without C-board (use_static_tf=True) this also serves as the
-    # world-frame anchor because nothing publishes odom->gimbal_pitch_odom.
-    # When serial driver is running it provides the dynamic odom->gimbal_pitch_odom,
-    # and this node only needs to cover the remaining gimbal->camera leg.
     static_tf_node = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
         name="static_gimbal_tf",
         arguments=[
-            "0", "0", "0", "0", "0", "0",
+            "0", "0", "0", "-1.5708", "0", "-1.5708",
             "gimbal_pitch_odom",
             "front_industrial_camera_optical_frame",
         ],
-        condition=IfCondition(use_static_tf),
     )
 
     serial_driver_node = Node(
@@ -152,7 +131,6 @@ def generate_launch_description():
                 "config", "serial_driver_params.yaml",
             )
         ],
-        condition=IfCondition(use_serial_driver),
     )
 
     bringup_cmd = IncludeLaunchDescription(
@@ -204,9 +182,6 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(declare_use_respawn_cmd)
     ld.add_action(declare_log_level_cmd)
-    ld.add_action(declare_use_static_tf_cmd)
-    ld.add_action(declare_use_serial_driver_cmd)
-
     # Add the actions to launch all of the navigation nodes
     ld.add_action(static_tf_node)
     ld.add_action(serial_driver_node)
