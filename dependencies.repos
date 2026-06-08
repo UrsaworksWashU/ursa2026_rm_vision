@@ -12,7 +12,7 @@ repositories:
     version: humble
   hik_camera_ros2_driver:
     type: git
-    url: https://github.com/SMBU-PolarBear-Robotics-Team/hik_camera_ros2_driver.git
+    url: https://github.com/UrsaworksWashU/hik_camera_ros2_driver.git
     version: main
   auto_aim_interfaces:
     type: git
