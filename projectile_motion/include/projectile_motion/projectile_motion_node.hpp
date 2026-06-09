@@ -54,7 +54,7 @@ private:
   bool getCurrentGimbalAngle(
     const std::string & frame_id, const rclcpp::Time & stamp, double & cur_roll, double & cur_pitch,
     double & cur_yaw);
-  void publishHitYawMarker(double hit_yaw, double hit_pitch);
+  void publishHitYawMarker(double hit_yaw, double hit_pitch, const std::string & frame_id);
 
 private:
   double offset_x_;

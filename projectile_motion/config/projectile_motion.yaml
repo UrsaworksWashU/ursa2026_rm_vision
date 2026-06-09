@@ -6,9 +6,9 @@ projectile_motion:
       offset_yaw: 0.0
       offset_time: 0.0
       initial_speed: 18.0
-      target_frame: "gimbal_pitch"              # gimbal frame_id
+      target_frame: "gimbal_pitch_odom"         # shooter frame; lookupTransform(odom, this) gives current gimbal RPY
       target_topic: "tracker/target"
-      gimbal_cmd_topic: "cmd_gimbal_joint"
+      gimbal_cmd_topic: "cmd_gimbal"
       shoot_cmd_topic: "cmd_shoot"
       solver_type: "gravity"                    # projectile solve method: gravity / gaf
       # friction: 0.001                         # Air resistance factor if use GAF solver

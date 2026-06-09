@@ -194,7 +194,7 @@ void ProjectileMotionNode::calculateTargetPosition(
   hit_yaw = target_yaw;
   hit_pitch = target_pitch;
 
-  publishHitYawMarker(hit_yaw, hit_pitch);
+  publishHitYawMarker(hit_yaw, hit_pitch, msg->header.frame_id);
 }
 
 void ProjectileMotionNode::publishGimbalCommand(double hit_pitch, double hit_yaw, uint8_t shoot)
@@ -214,10 +214,11 @@ void ProjectileMotionNode::publishGimbalCommand(double hit_pitch, double hit_yaw
   shoot_cmd_publisher_->publish(shoot_cmd);
 }
 
-void ProjectileMotionNode::publishHitYawMarker(double hit_yaw, double hit_pitch)
+void ProjectileMotionNode::publishHitYawMarker(
+  double hit_yaw, double hit_pitch, const std::string & frame_id)
 {
   visualization_msgs::msg::Marker marker;
-  marker.header.frame_id = "gimbal_pitch_odom";
+  marker.header.frame_id = frame_id;
   marker.header.stamp = this->now();
   marker.ns = "hit_yaw";
   marker.id = 0;
