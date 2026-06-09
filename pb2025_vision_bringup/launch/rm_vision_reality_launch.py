@@ -109,13 +109,28 @@ def generate_launch_description():
         "log_level", default_value="info", description="log level"
     )
 
-    static_tf_node = Node(
+    # Node 1 - physical extrinsic: gimbal pitch center -> camera body.
+    # Fill x,y,z (meters) and yaw,pitch,roll (radians) from CAD/measurement.
+    # Currently identity (0s) == co-located, no tilt. Replace with real values.
+    camera_extrinsic_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
-        name="static_gimbal_tf",
+        name="gimbal_to_camera_tf",
+        arguments=[
+            "1", "0", "0", "0", "0", "0", # Need measure
+            "gimbal_pitch_odom",
+            "front_industrial_camera_link",
+        ],
+    )
+
+    # Node 2 - fixed optical-frame convention rotation (never change this).
+    camera_optical_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="camera_optical_tf",
         arguments=[
             "0", "0", "0", "-1.5708", "0", "-1.5708",
-            "gimbal_pitch_odom",
+            "front_industrial_camera_link",
             "front_industrial_camera_optical_frame",
         ],
     )
@@ -183,7 +198,8 @@ def generate_launch_description():
     ld.add_action(declare_use_respawn_cmd)
     ld.add_action(declare_log_level_cmd)
     # Add the actions to launch all of the navigation nodes
-    ld.add_action(static_tf_node)
+    ld.add_action(camera_extrinsic_tf)
+    ld.add_action(camera_optical_tf)
     ld.add_action(serial_driver_node)
     ld.add_action(bringup_cmd)
     ld.add_action(start_robot_state_publisher_cmd)
