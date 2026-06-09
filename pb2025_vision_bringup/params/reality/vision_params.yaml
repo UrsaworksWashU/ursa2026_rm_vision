@@ -52,7 +52,7 @@ armor_detector_openvino:
 armor_tracker:
   ros__parameters:
     use_sim_time: false
-    target_frame: gimbal_pitch_odom
+    target_frame: odom
     max_armor_distance: 10.0
 
     ekf:
@@ -78,7 +78,7 @@ projectile_motion:
       offset_yaw: 0.0
       offset_time: 0.15
       initial_speed: 20.0
-      target_frame: "gimbal_pitch"              # gimbal frame_id
+      target_frame: "gimbal_pitch_odom"         # shooter frame; lookupTransform(odom, this) gives current gimbal RPY
       target_topic: "tracker/target"
       gimbal_cmd_topic: "cmd_gimbal"
       shoot_cmd_topic: "cmd_shoot"
