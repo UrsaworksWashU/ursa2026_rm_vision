@@ -9,12 +9,12 @@ hik_camera_ros2_driver:
     # frame_id: "optical_frame"     # If not set, it will be set as <camera_name>_optical_frame
     # camera_topic: "image"         # If not set, it will be set as <camera_name>/image
 
-    # camera lens set to max focus(infinity sign) and min aperture(2.8)
+    # camera lens set to near max focus and min aperture(2.8)
     image_width: 1440               # Capture width in px (centered ROI). Lower res -> lower latency/fps load
     image_height: 1080              # Capture height in px (centered ROI)
     acquisition_frame_rate: 90.0   # Unit: Hz
-    exposure_time: 1000             # Unit: us
-    gain: 11.0                      # Range: 0.0 ~ 16.9, Unit: dB
+    exposure_time: 500             # Unit: us
+    gain: 14.0                     # Range: 0.0 ~ 16.9, Unit: dB
 
 armor_detector_opencv:
   ros__parameters:
