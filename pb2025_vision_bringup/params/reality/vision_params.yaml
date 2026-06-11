@@ -23,9 +23,9 @@ armor_detector_opencv:
     camera_name: "front_industrial_camera"
 
     detect_color: 0
-    binary_thres: 80
+    binary_thres: 70
 
-    light.min_ratio: 0.1
+    light.min_ratio: 0.07
     armor.min_light_ratio: 0.8
 
     classifier_threshold: 0.25
