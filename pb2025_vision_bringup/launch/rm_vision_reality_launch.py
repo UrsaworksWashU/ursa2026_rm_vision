@@ -117,7 +117,7 @@ def generate_launch_description():
         executable="static_transform_publisher",
         name="gimbal_to_camera_tf",
         arguments=[
-            "0.12", "0", "-0.04", "0", "0", "0", # Need measure
+            "0.06", "0", "-0.04", "0", "0", "0", # Need measure
             "gimbal_pitch_odom",
             "front_industrial_camera_link",
         ],
