@@ -13,17 +13,17 @@ hik_camera_ros2_driver:
     image_width: 1440               # Capture width in px (centered ROI). Lower res -> lower latency/fps load
     image_height: 1080              # Capture height in px (centered ROI)
     acquisition_frame_rate: 90.0   # Unit: Hz
-    exposure_time: 500             # Unit: us
-    gain: 14.0                     # Range: 0.0 ~ 16.9, Unit: dB
+    exposure_time: 1200             # Unit: us
+    gain: 11.0                     # Range: 0.0 ~ 16.9, Unit: dB
 
 armor_detector_opencv:
   ros__parameters:
     use_sim_time: false
-    debug: false
+    debug: true
     camera_name: "front_industrial_camera"
 
     detect_color: 0
-    binary_thres: 70
+    binary_thres: 80
 
     light.min_ratio: 0.07
     armor.min_light_ratio: 0.8
