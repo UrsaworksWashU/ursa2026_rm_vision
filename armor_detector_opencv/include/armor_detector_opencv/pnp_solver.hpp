@@ -29,8 +29,32 @@ public:
   float calculateDistanceToCenter(const cv::Point2f & image_point);
 
 private:
+  // Image points in the same order used for the object points
+  // (left bottom, left top, right top, right bottom)
+  std::vector<cv::Point2f> toImagePoints(const Armor & armor) const;
+
+  // Select the 3d model points matching the armor size
+  const std::vector<cv::Point3f> & objectPoints(const Armor & armor) const;
+
+  // Sum of L2 distances between detected and reprojected image points
+  double calculateReprojectionError(
+    const Armor & armor, const cv::Mat & rvec, const cv::Mat & tvec) const;
+
+  // Resolve the IPPE planar PnP yaw ambiguity by selecting one of the two
+  // candidate solutions. Returns the index into rvecs/tvecs to use.
+  size_t selectPnPSolution(
+    const Armor & armor, const std::vector<cv::Mat> & rvecs,
+    const std::vector<cv::Mat> & tvecs) const;
+
+  // Convert a rotation matrix to roll-pitch-yaw (radians)
+  static cv::Vec3d rotationMatrixToRPY(const cv::Matx33d & R);
+
   cv::Mat camera_matrix_;
   cv::Mat dist_coeffs_;
+
+  // Camera-optical -> gimbal-like frame (x forward, y left, z up).
+  // Used only to read the yaw/roll sign when disambiguating; needs no IMU.
+  const cv::Matx33d R_gimbal_camera_{0, 0, 1, -1, 0, 0, 0, -1, 0};
 
   // Unit: mm
   static constexpr float SMALL_ARMOR_WIDTH = 135;
